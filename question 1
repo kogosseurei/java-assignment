@@ -1,50 +1,99 @@
-public class Main {
+/**
+ * Main class demonstrating a simple bank account system
+ */
+class Main {
 
-    // Inner class: BankAccount
+    /**
+     * Inner class representing a bank account with basic operations
+     */
     static class BankAccount {
         private String accountNumber;
         private String accountName;
         private double balance;
 
-        // Constructor
+        /**
+         * Constructor to create a new bank account
+         * @param accountNumber the account number (must not be null or empty)
+         * @param accountName the account holder's name (must not be null or empty)
+         * @param balance initial balance (must be non-negative)
+         */
         public BankAccount(String accountNumber, String accountName, double balance) {
+            if (accountNumber == null || accountNumber.trim().isEmpty()) {
+                throw new IllegalArgumentException("Account number cannot be null or empty");
+            }
+            if (accountName == null || accountName.trim().isEmpty()) {
+                throw new IllegalArgumentException("Account name cannot be null or empty");
+            }
+            if (balance < 0) {
+                throw new IllegalArgumentException("Initial balance cannot be negative");
+            }
+            
             this.accountNumber = accountNumber;
             this.accountName = accountName;
             this.balance = balance;
         }
 
-        // Deposit method
+        /**
+         * Deposits money into the account
+         * @param amount the amount to deposit (must be positive)
+         */
         public void deposit(double amount) {
             if (amount > 0) {
                 balance += amount;
-                System.out.println(amount + " deposited. New balance: " + balance);
+                System.out.println("$" + amount + " deposited. New balance: $" + balance);
             } else {
-                System.out.println("Deposit amount must be positive.");
+                System.out.println("Error: Deposit amount must be positive.");
             }
         }
 
-        // Withdrawal method
-        public void withdrawal(double amount) {
-            if (amount > 0 && amount <= balance) {
+        /**
+         * Withdraws money from the account
+         * @param amount the amount to withdraw (must be positive and not exceed balance)
+         */
+        public void withdraw(double amount) {
+            if (amount <= 0) {
+                System.out.println("Error: Withdrawal amount must be positive.");
+            } else if (amount > balance) {
+                System.out.println("Error: Insufficient funds. Available balance: $" + balance);
+            } else {
                 balance -= amount;
-                System.out.println(amount + " withdrawn. New balance: " + balance);
-            } else {
-                System.out.println("Invalid withdrawal amount.");
+                System.out.println("$" + amount + " withdrawn. New balance: $" + balance);
             }
         }
 
-        // Getter for balance
+        /**
+         * Gets the current account balance
+         * @return the current balance
+         */
         public double getBalance() {
             return balance;
         }
+
+        /**
+         * Gets the account number
+         * @return the account number
+         */
+        public String getAccountNumber() {
+            return accountNumber;
+        }
+
+        /**
+         * Gets the account holder's name
+         * @return the account holder's name
+         */
+        public String getAccountName() {
+            return accountName;
+        }
     }
 
-    // Main method
+    /**
+     * Main method demonstrating bank account operations
+     */
     public static void main(String[] args) {
         BankAccount myAccount = new BankAccount("001", "Louis Kogos", 1000.0);
 
-        myAccount.deposit(5000.0);      // Adds 500 to balance
-        myAccount.withdrawal(2000.0);   // Removes 200 from balance
-        System.out.println("Final Balance: " + myAccount.getBalance());
+        myAccount.deposit(5000.0);      // Adds 5000 to balance
+        myAccount.withdraw(2000.0);     // Removes 2000 from balance
+        System.out.println("Final Balance: $" + myAccount.getBalance());
     }
 }
